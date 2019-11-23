@@ -14,6 +14,6 @@ queues.add('fill-processing');
 const app = express();
 
 app.use('/', UI);
-app.listen(3002);
+app.listen(process.env.PORT || 3002);
 
 console.log(`Application started: http://localhost:3002`);
