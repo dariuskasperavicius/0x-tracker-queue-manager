@@ -49,7 +49,13 @@ passport.deserializeUser((user, done) => {
 */
 const app = express();
 
-app.use(session({ secret: process.env.EXPRESS_SESSION_SECRET }));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.EXPRESS_SESSION_SECRET,
+  }),
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
