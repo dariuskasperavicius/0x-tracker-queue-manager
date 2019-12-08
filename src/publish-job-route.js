@@ -42,12 +42,14 @@ const get = (req, res) => {
 const post = (req, res, next) => {
   const { queue, job, data } = req.body;
 
+  const parsedData = JSON.parse(data);
+
   new Queue(queue, {
     redis: {
       host: process.env.REDIS_HOST,
     },
   })
-    .add(job, data)
+    .add(job, parsedData)
     .then(() => {
       res.send('job published');
     })
