@@ -8,6 +8,10 @@ const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
 
+const { QUEUE } = require('./constants');
+const publishJobRoute = require('./publish-job-route');
+const wrapperRoute = require('./wrapper-route');
+
 /* 
   Configure Bull Board
 */
@@ -17,7 +21,9 @@ const queues = createQueues({
   },
 });
 
-queues.add('fill-processing');
+Object.values(QUEUE).forEach(queueName => {
+  queues.add(queueName);
+});
 
 /*
   Configure Passport
@@ -77,17 +83,18 @@ app.get('/login', passport.authenticate('auth0'), (req, res) => {
   res.redirect('/');
 });
 
-app.use(
-  '/',
-  (req, res, next) => {
-    if (req.isAuthenticated()) {
-      next();
-    } else {
-      res.redirect('/login');
-    }
-  },
-  UI,
-);
+const requireAuthentication = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+};
+
+app.use('/queues', requireAuthentication, UI);
+app.get('/publish-job', requireAuthentication, publishJobRoute.get);
+app.post('/publish-job', requireAuthentication, publishJobRoute.post);
+app.use('/', requireAuthentication, wrapperRoute);
 
 app.listen(process.env.PORT || 3002);
 
