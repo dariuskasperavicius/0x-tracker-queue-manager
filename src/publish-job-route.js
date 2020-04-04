@@ -30,6 +30,8 @@ const get = (req, res) => {
               jobName => `<option value="${jobName}">${jobName}</option>`,
             )}
           </select>
+          <label>Timeout (ms):</label>
+          <input type="number" name="timeout" />
           <label>Data:</label>
           <textarea name="data" rows="20" cols="100"></textarea>
           <button type="submit">Publish</button>
@@ -40,16 +42,19 @@ const get = (req, res) => {
 };
 
 const post = (req, res, next) => {
-  const { queue, job, data } = req.body;
+  const { queue, job, data, timeout } = req.body;
 
   const parsedData = JSON.parse(data);
+  const parsedTimeout = parseInt(timeout, 10);
 
   new Queue(queue, {
     redis: {
       host: process.env.REDIS_HOST,
     },
   })
-    .add(job, parsedData)
+    .add(job, parsedData, {
+      timeout: Number.isFinite(parsedTimeout) ? parsedTimeout : undefined,
+    })
     .then(() => {
       res.send('job published');
     })
