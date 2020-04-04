@@ -31,6 +31,7 @@ const wrapperRoute = (req, res) => {
         <nav>
           <a onclick="return navigate(this)" href="/queues">Queues</a>
           <a onclick="return navigate(this)" href="/publish-job">Publish Job</a>
+          <a onclick="return navigate(this)" href="/empty-queue">Empty Queue</a>
         </nav>
         <iframe src="/queues"></iframe>
         <script type="text/javascript">
