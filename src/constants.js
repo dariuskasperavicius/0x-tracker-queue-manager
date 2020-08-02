@@ -2,6 +2,7 @@ const QUEUE = {
   BULK_INDEXING: 'bulk-indexing',
   FILL_INDEXING: 'fill-indexing',
   FILL_PROCESSING: 'fill-processing',
+  INDEXING: 'indexing',
   TOKEN_PROCESSING: 'token-processing',
   TRADED_TOKEN_INDEXING: 'traded-token-indexing',
 };
