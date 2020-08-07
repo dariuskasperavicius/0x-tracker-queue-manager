@@ -5,6 +5,7 @@ const QUEUE = {
   INDEXING: 'indexing',
   TOKEN_PROCESSING: 'token-processing',
   TRADED_TOKEN_INDEXING: 'traded-token-indexing',
+  TRANSACTION_PROCESSING: 'transaction-processing',
 };
 
 const JOB = {
